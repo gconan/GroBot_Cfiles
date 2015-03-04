@@ -1,1 +1,0 @@
--l"./configPkg/linker.cmd" "./CC3200_LP.obj" "./empty_rom_pin_mux_config.obj" "./main.obj" "./network.obj" "./uart_if.obj" "../CC3200_LP.cmd" -l"libc.a" -l"c:/ti/tirtos_simplelink_2_01_00_03/products/CC3200_driverlib_1.0.2/driverlib/ccs/Release/driverlib.a" 
