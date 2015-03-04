@@ -2,7 +2,7 @@
  * network.h
  *
  *  Created on: Mar 2, 2015
- *      Author: James
+ *      Author: James etc
  */
 
 #include "simplelink.h"
