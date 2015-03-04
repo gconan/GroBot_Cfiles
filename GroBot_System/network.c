@@ -550,11 +550,22 @@ signed long hexToi(unsigned char *ptr)
     return result;
 }
 
+static void DisplayBanner()
+{
+    UART_PRINT("\n\n\n\r");
+    UART_PRINT("\t\t *************************************************\n\r");
+    UART_PRINT("\t\t      Stuff       \n\r");
+    UART_PRINT("\t\t *************************************************\n\r");
+    UART_PRINT("\n\n\n\r");
+}
+
 int Setup_Connection()
 {
     long lRetVal = -1;
 
     InitializeAppVariables();
+
+    DisplayBanner();
 
 	lRetVal = ConfigureSimpleLinkToDefaultState();
 	if(lRetVal < 0)
