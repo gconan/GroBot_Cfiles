@@ -8,6 +8,10 @@
 #include "simplelink.h"
 #include "wlan.h"
 
+extern char* SSID;
+extern char* PASSWORD;
+extern int SECURITY;
+
 #define PREFIX_BUFFER    "GET /welcome.html"
 #define POST_BUFFER      " HTTP/1.1\nHost:www.test-the-grobot.appspot.com\nAccept: text/html, application/xhtml+xml, */*\n\n"
 //#define HOST_NAME        "www.ti.com"
@@ -69,6 +73,8 @@ static long ConfigureSimpleLinkToDefaultState();
 static long WlanConnect();
 int CreateConnection(unsigned long DestinationIP);
 signed long hexToi(unsigned char *ptr);
-int Setup_Connection();
+int Network_Init();
+int Connect_To_AP();
+int Connect_To_Server();
 
 #endif /* NETWORK_H_ */
