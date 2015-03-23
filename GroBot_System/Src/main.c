@@ -49,8 +49,83 @@
 //*****************************************************************************
 
 #include "network.h"
+#include "uart_if.h"
+#include "common.h"
+#include "pinmux.h"
+#include "hw_ints.h"
+#include "rom_map.h"
+
+#if defined(ccs) || defined(gcc)
+extern void (* const g_pfnVectors[])(void);
+#endif
+#if defined(ewarm)
+extern uVectorEntry __vector_table;
+#endif
+
+void BoardInit(void)
+{
+// In case of TI-RTOS vector table is initialize by OS itself
+#ifndef USE_TIRTOS
+    //
+    // Set vector table base
+    //
+#if defined(ccs) || defined(gcc)
+    MAP_IntVTableBaseSet((unsigned long)&g_pfnVectors[0]);
+#endif
+#if defined(ewarm)
+    MAP_IntVTableBaseSet((unsigned long)&__vector_table);
+#endif
+#endif //USE_TIRTOS
+
+    //
+    // Enable Processor
+    //
+    MAP_IntMasterEnable();
+    MAP_IntEnable(FAULT_SYSTICK);
+
+    PRCMCC3200MCUInit();
+}
+
+void Display_Banner()
+{
+	UART_PRINT("\n\n\n\r");
+	UART_PRINT("*************************************************\n\r");
+	UART_PRINT("			   	Stuff       \n\r");
+	UART_PRINT("*************************************************\n\r");
+	UART_PRINT("\n\n\n\r");
+}
 
 int main() {
-	Setup_Connection();
+	int lRetVal = -1;
+
+    //
+    // Board Initialization
+    //
+    BoardInit();
+
+    //
+    // configure the GPIO pins for LEDs,UART
+    //
+    PinMuxConfig();
+
+	InitTerm();
+	Display_Banner();
+
+	lRetVal = Network_Init();
+	if(lRetVal == FAILURE) {
+		LOOP_FOREVER();
+	}
+
+	lRetVal = Connect_To_AP();
+	if(lRetVal == FAILURE) {
+		LOOP_FOREVER();
+	}
+
+	lRetVal = Connect_To_Server();
+	if(lRetVal == FAILURE) {
+		LOOP_FOREVER();
+	}
+
+	LOOP_FOREVER();
 }
 
